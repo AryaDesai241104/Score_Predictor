@@ -1,0 +1,27 @@
+# Python specific
+__pycache__/
+*.pyc
+*.pyd
+*.egg-info/
+.Python/
+.pytest_cache/
+.mypy_cache/
+
+# Virtual environment
+venv_score_predictor/
+.venv/ # Common name for virtual environments
+
+# Database files (if you don't want to track the actual data, only the schema)
+# score.db
+
+# Jupyter Notebook files
+.ipynb_checkpoints/
+*.ipynb_checkpoints/
+*.ipynb
+
+# VS Code files
+.vscode/
+
+# Operating System files
+.DS_Store
+Thumbs.db
