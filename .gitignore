@@ -9,7 +9,7 @@ __pycache__/
 
 # Virtual environment
 venv_score_predictor/
-.venv/ # Common name for virtual environments
+.venv/ 
 
 # Database files (if you don't want to track the actual data, only the schema)
 # score.db
