@@ -1,99 +1,107 @@
-# Score Predictor: Student Performance Analysis and Prediction
+# Score Predictor
 
-This project implements a machine learning pipeline to analyze various student attributes and predict their final test scores. It includes data loading from an SQLite database, extensive Exploratory Data Analysis (EDA), data cleaning, feature engineering, preprocessing (handling missing values, encoding categorical data, scaling numerical features), and training/evaluation of both Multiple Linear Regression and Polynomial Regression models.
+A data science project for predicting student test scores based on various academic, demographic, and lifestyle features. This project includes data exploration, preprocessing, feature engineering, and prepares the data for machine learning modeling.
 
-## Project Structure
+## Table of Contents
 
-```
+- [Project Overview](#project-overview)
+- [Features](#features)
+- [Installation](#installation)
+- [Dataset](#dataset)
+- [Exploratory Data Analysis](#exploratory-data-analysis)
+- [Data Preprocessing](#data-preprocessing)
+- [Feature Engineering](#feature-engineering)
+- [Usage](#usage)
+- [Requirements](#requirements)
+- [References](#references)
 
-Score_Predictor/
-├── test.py \# Main Python script containing all modular functions for analysis.
-├── score.db \# SQLite database file containing the student score data.
-├── .gitignore \# Specifies intentionally untracked files to ignore (e.g., virtual environments, IDE files).
-├── README.md \# This file.
-└── requirements.txt \# Lists all Python dependencies for the project.
+---
 
-```
+## Project Overview
+
+This repository demonstrates the workflow of a predictive modeling project where the goal is to predict students' `final_test` scores using a variety of features such as academic habits, demographics, and lifestyle factors. The workflow covers data extraction from a SQLite database, exploratory data analysis (EDA), data cleaning, feature engineering, encoding, scaling, and preparation for machine learning.
 
 ## Features
 
-- **Data Ingestion:** Loads student data directly from an SQLite database.
-- **Exploratory Data Analysis (EDA):**
-  - Basic DataFrame information (`.info()`, `.describe()`).
-  - Visualizations: Box plots and histograms for numerical distributions, correlation heatmap.
-- **Data Cleaning & Preprocessing:**
-  - Handles erroneous 'age' values.
-  - Drops irrelevant/redundant columns.
-  - Standardizes categorical string values.
-  - Imputes missing numerical data (median for `attendance_rate`).
-  - Imputes missing categorical data (mode for `CCA`).
-  - Removes rows with missing target values (`final_test`).
-- **Feature Engineering:**
-  - Calculates `total_sleep_hours` from `sleep_time` and `wake_time`.
-  - Derives `study_efficiency` from `hours_per_week` and `attendance_rate`.
-  - Calculates `total_students` from `n_male` and `n_female`.
-  - Creates `healthy_routine_score` from `total_sleep_hours` and `attendance_rate`.
-- **Categorical Encoding:** Applies One-Hot Encoding to categorical features.
-- **Data Splitting:** Divides data into training and testing sets.
-- **Feature Scaling:** Standardizes continuous numerical features using `StandardScaler`.
-- **Model Training & Evaluation:**
-  - **Multiple Linear Regression:** Trains and evaluates a basic linear model.
-  - **Polynomial Regression:** Trains and evaluates a polynomial regression model (default degree 3).
-  - Evaluates models using R² score, Mean Squared Error (MSE), Root Mean Squared Error (RMSE), and Mean Absolute Error (MAE).
-  - Visualizes actual vs. predicted values.
-- **Model Comparison:** Presents a comparison of model performance metrics to identify the best-performing model.
-
-## Requirements
-
-- Python 3.x (tested with Python 3.9-3.12)
-- All libraries listed in `requirements.txt`
+- **Data Extraction:** Reads student data from a SQLite database (`score.db`).
+- **EDA:** Summary statistics, boxplots, histograms, and correlation heatmaps.
+- **Data Cleaning:** Handles missing values, corrects inconsistent entries, and drops redundant columns.
+- **Feature Engineering:** 
+    - Calculates total sleep hours.
+    - Computes study efficiency.
+    - Generates a healthy routine score.
+    - Encodes categorical features.
+- **Preprocessing:** Splits data into training and testing sets, and standardizes numerical features.
+- **Ready for Modeling:** The cleaned and engineered dataset can be used for regression or classification tasks.
 
 ## Installation
 
-It is highly recommended to use a [Python virtual environment](https://docs.python.org/3/library/venv.html) to manage dependencies and avoid conflicts with other projects.
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/AryaDesai241104/Score_Predictor.git
+   cd Score_Predictor
+   ```
 
-1.  **Clone the Repository (or download the files):**
+2. **Install dependencies:**
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-    ```bash
-    git clone [https://github.com/YourGitHubUsername/Score_Predictor.git](https://github.com/YourGitHubUsername/Score_Predictor.git)
-    cd Score_Predictor
-    ```
+## Dataset
 
-    (If you downloaded the zip, just extract it and navigate into the `Score_Predictor` folder).
+- The main dataset is stored in a SQLite database file: `score.db`.
+- The data table (`score`) includes fields such as number of siblings, direct admission status, CCA (co-curricular activity), learning style, gender, tuition, final test score, number of male/female students, age, hours per week, attendance rate, sleep/wake times, mode of transport, and bag color.
 
-2.  **Create and Activate a Virtual Environment:**
+## Exploratory Data Analysis
 
-    ```bash
-    python -m venv venv_score_predictor
-    # On Windows:
-    .\venv_score_predictor\Scripts\activate
-    # On macOS/Linux:
-    source venv_score_predictor/bin/activate
-    ```
+The notebook `test.ipynb` includes:
 
-3.  **Install Dependencies:**
-    With your virtual environment activated, install the required libraries:
-    ```bash
-    pip install -r requirements.txt
-    ```
-    **Troubleshooting Installation Errors:** If you encounter permission errors (`OSError: [WinError 2]`) or issues with `numpy` or `scikit-learn`, try running your terminal/command prompt **as an Administrator** and then repeat the `pip install` command. Temporary disabling of antivirus might also be necessary.
+- Loading data from the SQLite database.
+- Displaying the structure (`df.info()`), sample rows, and summary statistics (`df.describe()`).
+- Visualizing distributions and outliers using boxplots and histograms.
+- Plotting a correlation heatmap for all numeric features.
+
+## Data Preprocessing
+
+- **Handling Missing Values:** Uses `SimpleImputer` to fill missing attendance rates with the median and fills missing CCA values with the mode. Drops rows where `final_test` is missing.
+- **Cleaning & Standardizing:** Unifies category names, replaces inconsistent entries, and removes invalid ages.
+- **Encoding Categorical Features:** Uses one-hot encoding for CCA, gender, direct admission, tuition, and learning style.
+- **Feature Engineering:** 
+    - Calculates total sleep hours from sleep and wake times.
+    - Computes study efficiency as `hours_per_week * attendance_rate`.
+    - Sums male and female counts for total students.
+    - Creates a healthy routine score as `total_sleep_hours * attendance_rate`.
+- **Scaling:** Standardizes selected numerical columns using `StandardScaler`.
 
 ## Usage
 
-1.  **Place `score.db`:**
-    Ensure the `score.db` SQLite database file is located in the same directory as the `test.py` script.
+- Open and run the Jupyter Notebook `test.ipynb` step by step to perform EDA, cleaning, feature engineering, and data preparation.
+- The notebook prepares the data for regression modeling (e.g., multiple linear regression, XGBoost, LightGBM).
 
-2.  **Run the Analysis Script:**
-    Activate your virtual environment (if not already active) and execute the `test.py` script:
+## Requirements
 
-    ```bash
-    python test.py
-    ```
+See `requirements.txt` for all dependencies.
 
-    The script will perform the entire analysis pipeline, printing progress and displaying plots. Close each plot window to proceed with the script execution.
+```
+pandas>=1.0.0
+numpy>=1.20.0
+seaborn>=0.11.0
+matplotlib>=3.3.0
+scikit-learn>=0.24.0
+xgboost>=1.7.0  
+lightgbm>=3.3.0 
+```
 
-## Customization
+Install with:
+```bash
+pip install -r requirements.txt
+```
 
-- **Database Path/Table Name:** Modify the `db_path` and `table_name` arguments in the `main_analysis` function call within the `if __name__ == "__main__":` block in `test.py`.
-- **Polynomial Degree:** Change the `poly_degree` argument in the `main_analysis` function call to experiment with different polynomial complexities for Polynomial Regression.
-- **EDA Plots:** The `explore_data` function generates many plots. If you want to skip this step for faster execution, you can comment out the `explore_data(df.copy())` line in the `main_analysis` function.
+## References
+
+- [AIAP® Preparatory Bootcamp Intake 1 - Assignment (PDF)](AIAPⓇPreparatoryBootcampIntake1-Assignment.pdf)
+- Data and notebook contributors: AryaDesai241104
+
+---
+
+**Note:** This repository is for educational and demonstration purposes. The data and code can be adapted for similar machine learning workflows.
